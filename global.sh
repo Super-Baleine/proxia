@@ -17,7 +17,8 @@ read -p "What do you want to do ?
 2) create an user
 3) delete an user or all users
 4) Unistall the proxy server
-5) Leave the script" choice
+5) Leave the script
+> " choice
 if [[ $choice = "5" ]]; then
   echo "
   Bye bye ! x)";exit 0;
@@ -31,7 +32,7 @@ case $choice in
     echo " " > /etc/squid/squid.conf
     read -p "Enter the internal/public server's ip : " IP
     if [[ $IP = "" ]]; then
-      read -p "Can I take in on the Internet ? (y|n)" IP
+      read -p "Can I take it on the Internet ? (y|n)" IP
       if [[ $IP = "y" ]]; then
         IP=$(wget -qO- ipv4.icanhazip.com)
       else
