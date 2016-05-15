@@ -72,8 +72,13 @@ case $choice in
     fi
     ;;
   "3")
-    read -p "User's name : " $user
-    htpasswd -D /etc/squid/passwd $user
+    if [[ ! -e /etc/squid/passwd ]]; then
+      echo "The file not exist. Therefore, there is no users.
+      You can create a new user running again the script.";
+    else
+      read -p "User's name : " $user
+      htpasswd -D /etc/squid/passwd $user
+    fi
     ;;
   "4")
     echo -n "Really ? (y|n)";read $really
