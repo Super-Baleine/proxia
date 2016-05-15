@@ -2,7 +2,7 @@
 
 #---------- CHECK THE RELEASE ----------
 if [[ ! -e /etc/debian_version ]]; then
-  echo "Sorry, but actually, this script can run only on Debian 7 or 8";
+  echo "Sorry, but actually, this script can run only on Debian 7 or 8 like";
   exit 0;
 fi
 if [[ "$EUID" -ne 0 ]]; then
@@ -29,7 +29,16 @@ case $choice in
     apt-get update;apt-get install squid -y;apt-get install apache2-utils -y;
     cp /etc/squid/squid.conf /etc/squid/squid.conf.backup;
     echo " " > /etc/squid/squid.conf
-    IP=$(wget -qO- ipv4.icanhazip.com)
+    read -p "Enter the internal/public server's ip : " $IP
+    if [[ $IP = "" ]]; then
+      read -p "Can I take in on the Internet ? (y|n)" $IP
+      if [[ $IP = "y" ]]; then
+        IP=$(wget -qO- ipv4.icanhazip.com)
+      else
+        echo "Sorry, but I need your IP... :/
+        exiting...";exit 0;
+      fi
+    fi
     read -p "Enter the port : " $port
     read -p "Enter the welcome message : " $welcome
     read -p "Do you want choose your hostname ? ('y' for 'yes')" $host_name
