@@ -53,17 +53,23 @@ case $choice in
     echo "acl all src all" >> /etc/squid/squid.conf
     echo "http_port $port" >> /etc/squid/squid.conf
     echo "auth_param basic program /usr/lib/squid/ncsa_auth /etc/squid/passwd" >> /etc/squid/squid.conf
-    echo "acl utilisateurs proxy_auth REQUIRED" >> /etc/squid/squid.conf
-    echo "http_access deny !utilisateurs" >> /etc/squid/squid.conf
+    echo "acl users proxy_auth REQUIRED" >> /etc/squid/squid.conf
+    echo "http_access deny !users" >> /etc/squid/squid.conf
     ##users
     read -p "User's name : " $user
     read -p "Password : " $pass
     htpasswd -c -b /etc/squid/passwd $user $pass
     ;;
   "2")
-    read -p "User's name : " $user
-    read -p "Set the password : " $pass
-    htpasswd -b /etc/squid/passwd $user $pass
+    if [[ ! -e /etc/squid/passwd ]]; then
+      read -p "User's name : " $user
+      read -p "Set the password : " $pass
+      htpasswd -c -b /etc/squid/passwd $user $pass
+    else
+      read -p "User's name : " $user
+      read -p "Set the password : " $pass
+      htpasswd -b /etc/squid/passwd $user $pass
+    fi
     ;;
   "3")
     read -p "User's name : " $user
