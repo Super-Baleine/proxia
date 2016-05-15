@@ -29,9 +29,9 @@ case $choice in
     apt-get update;apt-get install squid -y;apt-get install apache2-utils -y;
     cp /etc/squid/squid.conf /etc/squid/squid.conf.backup;
     echo " " > /etc/squid/squid.conf
-    read -p "Enter the internal/public server's ip : " $IP
+    read -p "Enter the internal/public server's ip : " IP
     if [[ $IP = "" ]]; then
-      read -p "Can I take in on the Internet ? (y|n)" $IP
+      read -p "Can I take in on the Internet ? (y|n)" IP
       if [[ $IP = "y" ]]; then
         IP=$(wget -qO- ipv4.icanhazip.com)
       else
@@ -39,13 +39,13 @@ case $choice in
         exiting...";exit 0;
       fi
     fi
-    read -p "Enter the port : " $port
-    read -p "Enter the welcome message : " $welcome
-    read -p "Do you want choose your hostname ? ('y' for 'yes')" $host_name
+    read -p "Enter the port : " port
+    read -p "Enter the welcome message : " welcome
+    read -p "Do you want choose your hostname ? ('y' for 'yes')" host_name
       if [[ $host_name = "y" ]]; then
-        read -p "Enter your hostname : " $host_name
+        read -p "Enter your hostname : " host_name
       else
-        $host_name=$HOSTNAME
+        host_name=$HOSTNAME
       fi
     echo "visible_hostname $host_name" >> /etc/squid/squid.conf
     echo "http_port $IP:$port" >> /etc/squid/squid.conf
@@ -56,18 +56,18 @@ case $choice in
     echo "acl users proxy_auth REQUIRED" >> /etc/squid/squid.conf
     echo "http_access deny !users" >> /etc/squid/squid.conf
     ##users
-    read -p "User's name : " $user
-    read -p "Password : " $pass
+    read -p "User's name : " user
+    read -p "Password : " pass
     htpasswd -c -b /etc/squid/passwd $user $pass
     ;;
   "2")
     if [[ ! -e /etc/squid/passwd ]]; then
-      read -p "User's name : " $user
-      read -p "Set the password : " $pass
+      read -p "User's name : " user
+      read -p "Set the password : " pass
       htpasswd -c -b /etc/squid/passwd $user $pass
     else
-      read -p "User's name : " $user
-      read -p "Set the password : " $pass
+      read -p "User's name : " user
+      read -p "Set the password : " pass
       htpasswd -b /etc/squid/passwd $user $pass
     fi
     ;;
@@ -76,12 +76,12 @@ case $choice in
       echo "The file not exist. Therefore, there is no users.
       You can create a new user running again the script.";
     else
-      read -p "User's name : " $user
+      read -p "User's name : " user
       htpasswd -D /etc/squid/passwd $user
     fi
     ;;
   "4")
-    echo -n "Really ? (y|n)";read $really
+    echo -n "Really ? (y|n)";read really
     if [[ $really = "y" ]]; then
       apt-get remove squid;apt-get autoremove;apt-get purge;
     fi
