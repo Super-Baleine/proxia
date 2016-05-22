@@ -30,6 +30,7 @@ case $choice in
     apt-get update;apt-get install squid -y;apt-get install apache2-utils -y;
     cp /etc/squid/squid.conf /etc/squid/squid.conf.backup;
     echo " " > /etc/squid/squid.conf
+    echo "If you don't know the server's ip, let the blank field.";
     read -p "Enter the internal/public server's ip : " IP
     if [[ $IP = "" ]]; then
       read -p "Can I take it on the Internet ? (y|n)" IP
@@ -85,6 +86,9 @@ case $choice in
     echo -n "Really ? (y|n)";read really
     if [[ $really = "y" ]]; then
       apt-get remove squid;apt-get autoremove;apt-get purge;
+      if [[ -d /etc/squid ]]; then
+        rm -rf /etc/squid
+      fi
     fi
     ;;
   *)
@@ -94,4 +98,9 @@ case $choice in
 esac
 echo "Finished !
 You can run the script again to create more user or delete some users.";
+read -p "Do you want to restart the script ? (y|n)" end
+if [[ $end = "y" ]]; then
+  ./global.sh;
+  exit 0;
+fi
 exit 0;
