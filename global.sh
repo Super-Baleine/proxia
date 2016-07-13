@@ -6,7 +6,7 @@ if [[ ! -e /etc/debian_version ]]; then
   exit 0;
 fi
 if [[ "$EUID" -ne 0 ]]; then
-  echo "Sorry, you need to be root to install GnuPG";
+  echo "Sorry, you need to be root to install Squid";
   exit 0;
 fi
 #--
